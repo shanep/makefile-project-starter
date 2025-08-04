@@ -1,5 +1,8 @@
 # Makefile Project Template
 
+NOTE: This project will not build using the Windows toolchain. On Mac the debug build doesn't 
+have full support for memory sanitization. 
+
 Steps to configure, build, run, and test the project.
 
 ## Building
