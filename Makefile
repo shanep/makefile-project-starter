@@ -21,7 +21,7 @@ EXE_DEPS := $(EXE_OBJS:.o=.d)
 CFLAGS ?= -Wall -Wextra  -MMD -MP
 DEBUG ?= -g
 SANATIZE ?= -fno-omit-frame-pointer -fsanitize=address
-LDFLAGS ?= $(SANATIZE)
+
 
 #If you need to link against a library uncomment the line below and add the library name
 #LDFLAGS ?= -pthread -lreadline
@@ -33,6 +33,7 @@ all: $(TARGET_EXEC) $(TARGET_TEST)
 #https://www.gnu.org/software/make/manual/make.html#Target_002dspecific
 debug: CFLAGS += $(SANATIZE)
 debug: CFLAGS += $(DEBUG)
+debug: LDFLAGS += $(SANATIZE)
 debug: $(TARGET_EXEC) $(TARGET_TEST)
 
 $(TARGET_EXEC): $(OBJS) $(EXE_OBJS)
