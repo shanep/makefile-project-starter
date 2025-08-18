@@ -21,6 +21,7 @@ EXE_DEPS := $(EXE_OBJS:.o=.d)
 CFLAGS ?= -Wall -Wextra  -MMD -MP
 DEBUG ?= -g
 SANATIZE ?= -fno-omit-frame-pointer -fsanitize=address
+LDFLAGS ?= $(SANATIZE)
 
 #If you need to link against a library uncomment the line below and add the library name
 #LDFLAGS ?= -pthread -lreadline
