@@ -1,12 +1,38 @@
+#include "lab.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-#ifndef TEST
-int main(void)
-{
-  printf("hello world\n");
-  return 0;
+int add(int a, int b) {
+    return a + b;
 }
-#endif
 
+int subtract(int a, int b) {
+    return a - b;
+}
 
-/**Update this file with the starter code**/
+char *get_greeting(const char *restrict name)
+{
+  if (name == NULL)
+  {
+    return NULL;
+  }
+
+  // Allocate memory for the greeting message
+  size_t length = snprintf(NULL, 0, "Hello, %s!", name);
+  if (length < 0)
+  {
+    return NULL; // snprintf failed
+  }
+  size_t alloc_size = length + 1; // +1 for the null terminator
+  char *greeting = malloc(alloc_size);
+
+  if (greeting == NULL)
+  {
+    return NULL; // Memory allocation failed
+  }
+
+  // Create the greeting message
+  snprintf(greeting, alloc_size, "Hello, %s!", name);
+
+  return greeting;
+}

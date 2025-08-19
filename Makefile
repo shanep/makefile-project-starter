@@ -1,30 +1,35 @@
 APP_NAME ?= myapp
-# Default build type (release)
-BUILD ?= release
+# Default build type (debug, release, test)
+BUILD ?= debug
 
 # Set the directories for build and source files
 TEST_DIR ?= tests
 SRC_DIR ?= src
 BUILD_BASE_DIR ?= build
 
-# Global Flags
-CFLAGS ?= -Wall -Wextra  -MMD -MP
+# Flags for hardening and security
+# https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+CFLAGS ?= -Wall -Wextra -O2 -fPIE -MMD -MP
+CFLAGS += -Wformat -Wformat=2 -Wconversion -Wsign-conversion -Wimplicit-fallthrough
+CFLAGS += -fstrict-flex-arrays=3  -fstack-protector-strong
+CFLAGS += -Werror=format-security -Werror=implicit -Werror=incompatible-pointer-types -Werror=int-conversion
+
 # For threading uncomment the next line
 #LDFLAGS ?= -pthread
 
 
+
 # Build configurations
 ifeq ($(BUILD),release)
-  CFLAGS += -O2
   BUILD_DIR := $(BUILD_BASE_DIR)/release
   TARGET ?= $(BUILD_DIR)/$(APP_NAME)
 else ifeq ($(BUILD),debug)
-  CFLAGS += -g -O0 -DDEBUG -fno-omit-frame-pointer -fsanitize=address
+  CFLAGS := -g -O0 -DDEBUG -fno-omit-frame-pointer -fsanitize=address
   LDFLAGS += -fsanitize=address
   BUILD_DIR := $(BUILD_BASE_DIR)/debug
   TARGET ?= $(BUILD_DIR)/$(APP_NAME)_d
 else ifeq ($(BUILD),test)
-  CFLAGS += -g -O0 -DTEST -fprofile-arcs -ftest-coverage
+  CFLAGS := -g -O0 -DTEST -fprofile-arcs -ftest-coverage
   LDFLAGS += -fprofile-arcs -ftest-coverage
   BUILD_DIR := $(BUILD_BASE_DIR)/tests
   TEST_TARGET ?= $(BUILD_DIR)/$(APP_NAME)_t
@@ -47,7 +52,7 @@ $(TARGET): $(OBJS)
 
 # Line the object files to create the test executable
 $(TEST_TARGET): $(OBJS) $(TEST_OBJS)
-	$(CC) $(CFLAGS) $(TEST_OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) $(TEST_OBJS) -o $@ $(LDFLAGS)
 
 # Compile object files from source files
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c
@@ -59,6 +64,9 @@ $(BUILD_DIR)/%.c.o: $(TEST_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+
+# Targets for running tests and cleaning up
+.PHONY: release debug test report _report leak clean print
 # These targets allow you to build in different modes without changing the BUILD variable
 # You can run `make debug`, `make release`, etc.
 # Each target will set the BUILD variable and call the main Makefile target
@@ -68,9 +76,20 @@ debug:
 	$(MAKE) BUILD=debug
 test:
 	$(MAKE) BUILD=test
+report: test
+	$(MAKE) BUILD=test _report
+_report: clean test
+	@echo "Generating coverage report..."
+	./$(BUILD_DIR)/$(APP_NAME)_t
+	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
+	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
+leak: debug
+	@echo "Running memory leak check..."
+	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_d
+	@echo "Memory leak check complete. Check the output above for any leaks."
 
-# Targets for running tests and cleaning up
-.PHONY: debug release test clean print
+
+
 clean:
 	$(RM) -rf $(BUILD_BASE_DIR)
 
