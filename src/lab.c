@@ -19,17 +19,20 @@ char *get_greeting(const char *restrict name)
 
   // Allocate memory for the greeting message
   size_t length = snprintf(NULL, 0, "Hello, %s!", name);
-  if (length < 0)
+  if (length < 0) // GCOVR_EXCL_START
   {
     return NULL; // snprintf failed
-  }
+  } // GCOVR_EXCL_STOP
+
   size_t alloc_size = length + 1; // +1 for the null terminator
   char *greeting = malloc(alloc_size);
 
-  if (greeting == NULL)
+
+  if (greeting == NULL) // GCOVR_EXCL_START
   {
     return NULL; // Memory allocation failed
-  }
+  }  // GCOVR_EXCL_STOP
+
 
   // Create the greeting message
   snprintf(greeting, alloc_size, "Hello, %s!", name);

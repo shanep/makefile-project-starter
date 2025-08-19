@@ -76,6 +76,13 @@ debug:
 	$(MAKE) BUILD=debug
 test:
 	$(MAKE) BUILD=test
+
+check: test
+	$(MAKE) BUILD=test _check
+_check: test
+	./$(BUILD_DIR)/$(APP_NAME)_t
+	@echo "Tests completed."
+
 report: test
 	$(MAKE) BUILD=test _report
 _report: clean test

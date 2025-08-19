@@ -1,14 +1,15 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "harness/unity.h"
 #include "../src/lab.h"
 
 
 void setUp(void) {
-  // set stuff up here
+  printf("Setting up tests...\n");
 }
 
 void tearDown(void) {
-  // clean stuff up here
+  printf("Tearing down tests...\n");
 }
 
 void test_add(void) {
