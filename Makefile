@@ -83,29 +83,21 @@ leak: debug
 
 check: test
 	$(MAKE) BUILD=test _check
-_check: test
+_check:
 	./$(BUILD_DIR)/$(APP_NAME)_t
 	@echo "Tests completed."
 
-report: test
+report: clean codespace test
 	$(MAKE) BUILD=test _report
-_report: clean codespace test
+_report:
 	@echo "Generating coverage report..."
 	./$(BUILD_DIR)/$(APP_NAME)_t
 	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
 	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
 
-submit: report
-	$(MAKE) BUILD=test _submit
-_submit: report
-	@echo "Creating coverage report to submit..."
-	wkhtmltopdf --enable-local-file-access $(BUILD_DIR)/coverage_report.html $(BUILD_DIR)/coverage_report.pdf
-	@echo "Coverage report PDF generated at $(BUILD_DIR)/coverage_report.pdf"
-
-
 codespace:
     ifeq (, $(shell which gcovr))
-        sudo apt-get update && sudo apt-get install -y gcovr wkhtmltopdf
+        sudo apt-get update && sudo apt-get install -y gcovr
     endif
 
 
