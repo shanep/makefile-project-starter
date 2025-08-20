@@ -1,8 +1,7 @@
 {
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "ghcr.io/shanep/makefile-project-starter-devcontainer": {
-      "toolVersion": "latest"
-    }
+    "ghcr.io/rocker-org/devcontainer-features/pandoc:1": {},
+    "ghcr.io/devcontainers-extra/features/gcovr:1": {}
   }
 }

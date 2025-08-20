@@ -36,9 +36,9 @@ jobs:
     - name: make leak-test
       run: make leak-test
     - name: Submission Report
-      run: ./submit.sh
+      run: ./create-report.sh
     - name: Submission Report Example
-      run: ./submit.sh example
+      run: ./create-report.sh example
     - uses: stefanzweifel/git-auto-commit-action@v6
       with:
         commit_message: "Automated submission report update"

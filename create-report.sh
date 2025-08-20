@@ -5,11 +5,11 @@ ACTION=${1:-default}
 case $ACTION in
     default)
         FINAL_REPORT="submission-report.md"
-        FINAL_REPORT_PDF="submission-report.pdf"
+        FINAL_REPORT_OUTPUT="submission-report.docx"
         ;;
     example)
         FINAL_REPORT="submission-report-example.md"
-        FINAL_REPORT_PDF="submission-report-example.pdf"
+        FINAL_REPORT_OUTPUT="submission-report-example.docx"
         ;;
     *)
         echo "Unknown action: $ACTION"
@@ -21,7 +21,7 @@ esac
 
 
 rm -f $FINAL_REPORT
-rm -f $FINAL_REPORT_PDF
+rm -f $FINAL_REPORT_OUTPUT
 make clean 2>&1 > /dev/null
 
 # Generate timestamp and machine info
@@ -80,10 +80,10 @@ echo "---" >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 
 # Generate the pdf report
-echo "Generating PDF report..."
-pandoc -s -o $FINAL_REPORT_PDF $FINAL_REPORT
+echo "Generating report..."
+pandoc -s -o $FINAL_REPORT_OUTPUT $FINAL_REPORT
 if [ $? -ne 0 ]; then
-    echo "Error generating PDF report."
+    echo "Error generating report."
     exit 1
 fi
-echo "PDF report generated: $FINAL_REPORT_PDF"
+echo "Report generated: $FINAL_REPORT_OUTPUT"
