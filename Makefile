@@ -102,9 +102,9 @@ _report:
 	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
 
 codespace:
-    ifeq (, $(shell which gcovr))
-        sudo apt-get update && sudo apt-get install -y gcovr
-    endif
+	ifeq (, $(shell which gcovr))
+		sudo apt-get update && sudo apt-get install -y gcovr
+	endif
 
 help:
 	@echo "Usage: make [target]"
