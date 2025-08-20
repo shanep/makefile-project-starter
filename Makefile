@@ -94,18 +94,10 @@ _check:
 report: clean test
 	$(MAKE) BUILD=test _report
 _report:
-	@echo "Generating coverage report..."
+	@echo "Generating HTML coverage report..."
 	./$(BUILD_DIR)/$(APP_NAME)_t
 	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
 	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
-
-deps:
-	@echo "Setting up dependencies for CodeSpace..."
-	@echo "Installing gcovr if not already installed..."
-	@if ! which gcovr > /dev/null; then \
-		sudo apt-get update && sudo apt-get install -y gcovr;\
-	fi
-	@echo "Done!"
 
 help:
 	@echo "Usage: make [target]"
@@ -118,8 +110,8 @@ help:
 	@echo "  report    - Generate coverage report after running tests"
 	@echo "  leak      - Check for memory leaks in debug mode"
 	@echo "  clean     - Remove build artifacts"
-	@echo "  print     - Print build configuration and variables for debugging"
-	@echo "  deps      - Set up the environment for CodeSpace"
+	@echo "  print     - Print build variables for MakeFile debugging"
+	@echo "  help      - Show this help message"
 
 clean:
 	$(RM) -rf $(BUILD_BASE_DIR)

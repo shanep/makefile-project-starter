@@ -4,15 +4,6 @@ This is a simple Makefile project template that can be used to build, test, and
 debug C projects. It includes support for debug builds, sanitizers, and code
 coverage.
 
-## Requirements
-
-On a brand new codespace, you need to run `make deps` to install the required tools.
-You only need to do this once per codespace.
-
-```bash
-make deps
-```
-
 ## Test Harness
 
 This project uses the Unity Test Framework for unit testing. Refer to the
@@ -50,8 +41,8 @@ Available targets:
   report    - Generate coverage report after running tests
   leak      - Check for memory leaks in debug mode
   clean     - Remove build artifacts
-  print     - Print build configuration and variables for debugging
-  deps      - Set up the environment for CodeSpace
+  print     - Print build variables for MakeFile debugging
+  help      - Show this help message
 ```
 
 ## VS Code Integration
