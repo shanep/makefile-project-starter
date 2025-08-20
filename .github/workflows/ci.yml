@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Set up CodeSpace environment
+      run: make deps
     - name: make
       run: make
     - name: make debug
@@ -29,3 +31,5 @@ jobs:
       run: make check
     - name: make report
       run: make report
+    - name: make leak
+      run: make leak

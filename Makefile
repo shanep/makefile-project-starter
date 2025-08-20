@@ -17,8 +17,6 @@ CFLAGS += -Werror=format-security -Werror=implicit -Werror=incompatible-pointer-
 # For threading uncomment the next line
 #LDFLAGS ?= -pthread
 
-
-
 # Build configurations
 ifeq ($(BUILD),release)
   BUILD_DIR := $(BUILD_BASE_DIR)/release
@@ -66,7 +64,7 @@ $(BUILD_DIR)/%.c.o: $(TEST_DIR)/%.c
 
 
 # Targets for running tests and cleaning up
-.PHONY: release debug test report _report leak clean print check _check help codespace
+.PHONY: release debug test report _report leak clean print check _check help deps
 # These targets allow you to build in different modes without changing the BUILD variable
 # You can run `make debug`, `make release`, etc.
 # Each target will set the BUILD variable and call the main Makefile target
@@ -93,7 +91,7 @@ _check:
 	./$(BUILD_DIR)/$(APP_NAME)_t
 	@echo "Tests completed."
 
-report: clean codespace test
+report: clean test
 	$(MAKE) BUILD=test _report
 _report:
 	@echo "Generating coverage report..."
@@ -101,10 +99,13 @@ _report:
 	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
 	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
 
-codespace:
-	ifeq (, $(shell which gcovr))
-		sudo apt-get update && sudo apt-get install -y gcovr
-	endif
+deps:
+	@echo "Setting up dependencies for CodeSpace..."
+	@echo "Installing gcovr if not already installed..."
+	@if ! which gcovr > /dev/null; then \
+		sudo apt-get update && sudo apt-get install -y gcovr;\
+	fi
+	@echo "Done!"
 
 help:
 	@echo "Usage: make [target]"
@@ -118,7 +119,7 @@ help:
 	@echo "  leak      - Check for memory leaks in debug mode"
 	@echo "  clean     - Remove build artifacts"
 	@echo "  print     - Print build configuration and variables for debugging"
-	@echo "  codespace - Set up the environment for CodeSpace"
+	@echo "  deps      - Set up the environment for CodeSpace"
 
 clean:
 	$(RM) -rf $(BUILD_BASE_DIR)
