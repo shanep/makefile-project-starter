@@ -17,7 +17,7 @@ jobs:
       run: pandoc --version
     - uses: threeal/gcovr-action@v1.1.0
     - name: Create Submission Report
-      run: ./create-report.sh
+      run: ./github/workflows/create-report.sh
     - uses: stefanzweifel/git-auto-commit-action@v6
       with:
         commit_message: "Submission report created via GitHub Action"

@@ -75,10 +75,10 @@ echo "---" >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 
 # Generate the pdf report
-echo "Generating report..."
 pandoc -s -o $FINAL_REPORT_OUTPUT $FINAL_REPORT
 if [ $? -ne 0 ]; then
     echo "Error generating report."
     exit 1
 fi
-echo "Report generated: $FINAL_REPORT_OUTPUT"
+echo "Report generated: $FINAL_REPORT and $FINAL_REPORT_OUTPUT"
+exit 0
