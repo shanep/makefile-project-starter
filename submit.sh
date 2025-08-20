@@ -1,7 +1,24 @@
 #!/bin/bash
+# Parse command line arguments
+ACTION=${1:-default}
+
+case $ACTION in
+    default)
+        FINAL_REPORT="submission-report.md"
+        FINAL_REPORT_PDF="submission-report.pdf"
+        ;;
+    example)
+        FINAL_REPORT="submission-report-example.md"
+        FINAL_REPORT_PDF="submission-report-example.pdf"
+        ;;
+    *)
+        echo "Unknown action: $ACTION"
+        echo "Usage: $0 [example]"
+        exit 1
+        ;;
+esac
 # Clean previous builds and reports
-FINAL_REPORT="submission-report.md"
-FINAL_REPORT_PDF="submission-report.pdf"
+
 
 rm -f $FINAL_REPORT
 rm -f $FINAL_REPORT_PDF

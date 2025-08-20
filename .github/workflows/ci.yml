@@ -33,3 +33,14 @@ jobs:
       run: make report
     - name: make leak
       run: make leak
+    - name: make leak-test
+      run: make leak-test
+    - name: Submission Report
+      run: ./submit.sh
+    - name: Submission Report Example
+      run: ./submit.sh example
+    - uses: stefanzweifel/git-auto-commit-action@v6
+      with:
+        commit_message: "Automated submission report update"
+        commit_user_name: "github-actions"
+        commit_user_email: "none@none.com"

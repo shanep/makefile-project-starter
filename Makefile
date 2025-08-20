@@ -69,7 +69,7 @@ $(BUILD_DIR)/%.c.o: $(TEST_DIR)/%.c
 
 
 # Targets for running tests and cleaning up
-.PHONY: release debug test report _report leak clean print check _check help
+.PHONY: release debug test debug-test all clean print check report report-txt leak leak-test
 # These targets allow you to build in different modes without changing the BUILD variable
 # You can run `make debug`, `make release`, etc.
 # Each target will set the BUILD variable and call the main Makefile target
@@ -123,16 +123,19 @@ _report-txt:
 help:
 	@echo "Usage: make [target]"
 	@echo "Available targets:"
-	@echo "  debug     - Build the application in debug mode"
-	@echo "  release   - Build the application in release mode (default)"
-	@echo "  test      - Build the unit tests"
-	@echo "  all       - Builds debug, release, and test targets"
-	@echo "  check     - Run tests and check results"
-	@echo "  report    - Generate coverage report after running tests"
-	@echo "  leak      - Check for memory leaks in debug mode"
-	@echo "  clean     - Remove build artifacts"
-	@echo "  print     - Print build variables for MakeFile debugging"
-	@echo "  help      - Show this help message"
+	@echo "  all         - Builds debug, release, and test targets"
+	@echo "  release     - Build the application in release mode (default)"
+	@echo "  debug       - Build the application in debug mode"
+	@echo "  test        - Build the unit tests"
+	@echo "  check       - Run tests and check results"
+	@echo "  report      - Generate HTML coverage report after running tests"
+	@echo "  report-txt  - Generate text coverage report after running tests"
+	@echo "  leak        - Check for memory leaks in executable debug mode"
+	@echo "  leak-test   - Check for memory leaks in unit tests debug mode"
+	@echo "  clean       - Remove build artifacts"
+	@echo "  print       - Print build variables for MakeFile debugging"
+	@echo "  help        - Show this help message"
+
 
 clean:
 	$(RM) -rf $(BUILD_BASE_DIR)
