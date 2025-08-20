@@ -1,6 +1,6 @@
 APP_NAME ?= myapp
 # Default build type (debug, release, test)
-BUILD ?= debug
+BUILD ?= release
 
 # Set the directories for build and source files
 TEST_DIR ?= tests
@@ -66,7 +66,7 @@ $(BUILD_DIR)/%.c.o: $(TEST_DIR)/%.c
 
 
 # Targets for running tests and cleaning up
-.PHONY: release debug test report _report leak clean print check _check help setup-codespace
+.PHONY: release debug test report _report leak clean print check _check help codespace
 # These targets allow you to build in different modes without changing the BUILD variable
 # You can run `make debug`, `make release`, etc.
 # Each target will set the BUILD variable and call the main Makefile target
@@ -76,7 +76,13 @@ debug:
 	$(MAKE) BUILD=debug
 test:
 	$(MAKE) BUILD=test
+
+all: debug release test
+	@echo "All builds completed: debug, release, and test."
+
 leak: debug
+	$(MAKE) BUILD=debug _leak
+_leak:
 	@echo "Running memory leak check..."
 	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_d
 	@echo "Memory leak check complete. Check the output above for any leaks."
@@ -100,13 +106,13 @@ codespace:
         sudo apt-get update && sudo apt-get install -y gcovr
     endif
 
-
 help:
 	@echo "Usage: make [target]"
 	@echo "Available targets:"
-	@echo "  release   - Build the application in release mode"
 	@echo "  debug     - Build the application in debug mode"
+	@echo "  release   - Build the application in release mode (default)"
 	@echo "  test      - Build the unit tests"
+	@echo "  all       - Builds debug, release, and test targets"
 	@echo "  check     - Run tests and check results"
 	@echo "  report    - Generate coverage report after running tests"
 	@echo "  leak      - Check for memory leaks in debug mode"

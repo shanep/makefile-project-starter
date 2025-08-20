@@ -18,14 +18,15 @@ char *get_greeting(const char *restrict name)
   }
 
   // Allocate memory for the greeting message
-  size_t length = snprintf(NULL, 0, "Hello, %s!", name);
+  int length = snprintf(NULL, 0, "Hello, %s!", name);
   if (length < 0) // GCOVR_EXCL_START
   {
     return NULL; // snprintf failed
   } // GCOVR_EXCL_STOP
 
-  size_t alloc_size = length + 1; // +1 for the null terminator
-  char *greeting = malloc(alloc_size);
+  //Casting is safe here because we know length is non-negative
+  size_t alloc_size = (size_t) length + 1; // +1 for the null terminator
+  char *greeting = malloc( alloc_size);
 
 
   if (greeting == NULL) // GCOVR_EXCL_START
