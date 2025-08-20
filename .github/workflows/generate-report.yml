@@ -1,0 +1,21 @@
+name: Create Submission Report Via GitHub Action
+
+on:
+    workflow_dispatch:
+
+jobs:
+
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install pandoc
+      uses: pandoc/actions/setup@v1
+    - name: Run pandoc
+      run: pandoc --version
+    - name: Submission Report Example
+      run: ./create-report.sh example
+    - uses: stefanzweifel/git-auto-commit-action@v6
+      with:
+        commit_message: "Automated submission report example update"
+        commit_user_name: "github-actions"
+        commit_user_email: "none@none.com"
