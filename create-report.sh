@@ -7,19 +7,14 @@ case $ACTION in
         FINAL_REPORT="submission-report.md"
         FINAL_REPORT_OUTPUT="submission-report.docx"
         ;;
-    example)
-        FINAL_REPORT="submission-report-example.md"
-        FINAL_REPORT_OUTPUT="submission-report-example.docx"
-        ;;
     *)
         echo "Unknown action: $ACTION"
         echo "Usage: $0 [example]"
         exit 1
         ;;
 esac
+
 # Clean previous builds and reports
-
-
 rm -f $FINAL_REPORT
 rm -f $FINAL_REPORT_OUTPUT
 make clean 2>&1 > /dev/null
