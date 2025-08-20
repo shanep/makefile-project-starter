@@ -1,7 +1,6 @@
 {
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "ghcr.io/rocker-org/devcontainer-features/pandoc:1": {},
     "ghcr.io/devcontainers-extra/features/gcovr:1": {}
   }
 }
