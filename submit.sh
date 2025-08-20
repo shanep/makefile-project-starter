@@ -1,0 +1,72 @@
+#!/bin/bash
+# Clean previous builds and reports
+FINAL_REPORT="submission-report.md"
+FINAL_REPORT_PDF="submission-report.pdf"
+
+rm -f $FINAL_REPORT
+rm -f $FINAL_REPORT_PDF
+make clean 2>&1 > /dev/null
+
+# Generate timestamp and machine info
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+MACHINE=$(uname -a)
+echo "# Submission Report" > $FINAL_REPORT
+echo "- Submission generated at $TIMESTAMP" >> $FINAL_REPORT
+echo "- Machine info: $MACHINE" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+echo "---" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+
+# Build all in debug and release mode and capture output
+echo "## Build Output Debug" >> $FINAL_REPORT
+echo '```bash' >> $FINAL_REPORT
+BUILD=debug make all 2>&1 | tee -a $FINAL_REPORT
+echo '```' >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+echo "---" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+
+# Capture coverage report
+echo "## Coverage Report" >> $FINAL_REPORT
+echo '```bash' >> $FINAL_REPORT
+BUILD=test make report-txt 2>&1 | tee -a $FINAL_REPORT
+echo '```' >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+echo "---" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+
+# Capture memory leak report
+echo "## Memory Leak Report" >> $FINAL_REPORT
+echo '```bash' >> $FINAL_REPORT
+BUILD=debug-test make leak-test 2>&1 | tee -a $FINAL_REPORT
+echo '```' >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+echo "---" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+
+# Capture lab.c
+echo "## lab.c Content" >> $FINAL_REPORT
+echo '```c' >> $FINAL_REPORT
+cat src/lab.c >> $FINAL_REPORT
+echo '```' >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+echo "---" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+
+# Capture lab.h
+echo "## lab.h Content" >> $FINAL_REPORT
+echo '```c' >> $FINAL_REPORT
+cat src/lab.h >> $FINAL_REPORT
+echo '```' >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+echo "---" >> $FINAL_REPORT
+echo "" >> $FINAL_REPORT
+
+# Generate the pdf report
+echo "Generating PDF report..."
+pandoc -s -o $FINAL_REPORT_PDF $FINAL_REPORT
+if [ $? -ne 0 ]; then
+    echo "Error generating PDF report."
+    exit 1
+fi
+echo "PDF report generated: $FINAL_REPORT_PDF"

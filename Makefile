@@ -31,6 +31,11 @@ else ifeq ($(BUILD),test)
   LDFLAGS += -fprofile-arcs -ftest-coverage
   BUILD_DIR := $(BUILD_BASE_DIR)/tests
   TEST_TARGET ?= $(BUILD_DIR)/$(APP_NAME)_t
+else ifeq ($(BUILD),debug-test)
+  CFLAGS := -g -O0 -DDEBUG -DTEST -fno-omit-frame-pointer -fsanitize=address
+  LDFLAGS += -fsanitize=address
+  BUILD_DIR := $(BUILD_BASE_DIR)/debug-test
+  TEST_TARGET ?= $(BUILD_DIR)/$(APP_NAME)_td
 else
   $(error Invalid build type: $(BUILD))
 endif
@@ -64,7 +69,7 @@ $(BUILD_DIR)/%.c.o: $(TEST_DIR)/%.c
 
 
 # Targets for running tests and cleaning up
-.PHONY: release debug test report _report leak clean print check _check help deps
+.PHONY: release debug test report _report leak clean print check _check help
 # These targets allow you to build in different modes without changing the BUILD variable
 # You can run `make debug`, `make release`, etc.
 # Each target will set the BUILD variable and call the main Makefile target
@@ -74,8 +79,10 @@ debug:
 	$(MAKE) BUILD=debug
 test:
 	$(MAKE) BUILD=test
+debug-test:
+	$(MAKE) BUILD=debug-test
 
-all: debug release test
+all: debug release debug-test test
 	@echo "All builds completed: debug, release, and test."
 
 leak: debug
@@ -83,6 +90,13 @@ leak: debug
 _leak:
 	@echo "Running memory leak check..."
 	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_d
+	@echo "Memory leak check complete. Check the output above for any leaks."
+
+leak-test: debug-test
+	$(MAKE) BUILD=debug-test _leak-test
+_leak-test:
+	@echo "Running memory leak on unit tests ..."
+	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_td
 	@echo "Memory leak check complete. Check the output above for any leaks."
 
 check: test
@@ -98,6 +112,13 @@ _report:
 	./$(BUILD_DIR)/$(APP_NAME)_t
 	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
 	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
+
+report-txt: clean test
+	$(MAKE) BUILD=test _report-txt
+_report-txt:
+	@echo "Generating text coverage report..."
+	./$(BUILD_DIR)/$(APP_NAME)_t
+	gcovr --txt -r . --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$'
 
 help:
 	@echo "Usage: make [target]"
