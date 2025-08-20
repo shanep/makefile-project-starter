@@ -10,17 +10,26 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-    - uses: threeal/gcovr-action@v1.1.0
+    - name: Set up Python for gcovr
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12.7'
+    - name: Install gcovr
+      run: pip install gcovr
+
     - name: Create Submission Report
       id: create_report
       run: |
-        ls -la
-        echo "# Submission Report" > submission-report.md
-        echo "files=$(printf '"%s" ' submission-report.md)" > $GITHUB_OUTPUT
-      working-directory: ${{ github.workspace }}
+        ./.github/workflows/create-report.sh
+        {
+          echo 'report<<EOF'
+          cat submission-report.md
+          echo 'EOF'
+        } >> $GITHUB_OUTPUT
+
     - uses: docker://pandoc/core:3.5
       with:
-        args: -s -o submission-report.docx ${{ steps.create_report.outputs.files }}
+        args: -s -o submission-report.docx ${{ steps.create_report.outputs.report }}
 
     - uses: stefanzweifel/git-auto-commit-action@v6
       with:
