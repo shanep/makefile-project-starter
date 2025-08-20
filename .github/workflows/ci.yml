@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up CodeSpace environment
-      run: bash .devcontainer/setup.sh
     - name: make
       run: make
     - name: make debug
