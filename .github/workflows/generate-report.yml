@@ -10,13 +10,13 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Python for gcovr
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.12.7'
-    - name: Install gcovr
+    - name: Install gcovr from pip
       run: pip install gcovr
-
+    - uses: actions/checkout@v4
     - name: Create Submission Report
       id: create_report
       run: |
