@@ -66,7 +66,7 @@ $(BUILD_DIR)/%.c.o: $(TEST_DIR)/%.c
 
 
 # Targets for running tests and cleaning up
-.PHONY: release debug test report _report leak clean print
+.PHONY: release debug test report _report leak clean print check _check help setup-codespace
 # These targets allow you to build in different modes without changing the BUILD variable
 # You can run `make debug`, `make release`, etc.
 # Each target will set the BUILD variable and call the main Makefile target
@@ -76,6 +76,10 @@ debug:
 	$(MAKE) BUILD=debug
 test:
 	$(MAKE) BUILD=test
+leak: debug
+	@echo "Running memory leak check..."
+	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_d
+	@echo "Memory leak check complete. Check the output above for any leaks."
 
 check: test
 	$(MAKE) BUILD=test _check
@@ -85,17 +89,38 @@ _check: test
 
 report: test
 	$(MAKE) BUILD=test _report
-_report: clean test
+_report: clean codespace test
 	@echo "Generating coverage report..."
 	./$(BUILD_DIR)/$(APP_NAME)_t
 	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
 	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
-leak: debug
-	@echo "Running memory leak check..."
-	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_d
-	@echo "Memory leak check complete. Check the output above for any leaks."
+
+submit: report
+	$(MAKE) BUILD=test _submit
+_submit: report
+	@echo "Creating coverage report to submit..."
+	wkhtmltopdf --enable-local-file-access $(BUILD_DIR)/coverage_report.html $(BUILD_DIR)/coverage_report.pdf
+	@echo "Coverage report PDF generated at $(BUILD_DIR)/coverage_report.pdf"
 
 
+codespace:
+    ifeq (, $(shell which gcovr))
+        sudo apt-get update && sudo apt-get install -y gcovr wkhtmltopdf
+    endif
+
+
+help:
+	@echo "Usage: make [target]"
+	@echo "Available targets:"
+	@echo "  release   - Build the application in release mode"
+	@echo "  debug     - Build the application in debug mode"
+	@echo "  test      - Build the unit tests"
+	@echo "  check     - Run tests and check results"
+	@echo "  report    - Generate coverage report after running tests"
+	@echo "  leak      - Check for memory leaks in debug mode"
+	@echo "  clean     - Remove build artifacts"
+	@echo "  print     - Print build configuration and variables for debugging"
+	@echo "  codespace - Set up the environment for CodeSpace"
 
 clean:
 	$(RM) -rf $(BUILD_BASE_DIR)
