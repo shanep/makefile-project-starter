@@ -19,17 +19,12 @@ jobs:
     - uses: actions/checkout@v4
     - name: Create Submission Report
       id: create_report
-      run: |
-        ./.github/workflows/create-report.sh
-        {
-          echo 'report<<EOF'
-          cat submission-report.md
-          echo 'EOF'
-        } >> $GITHUB_OUTPUT
+      run: ./.github/workflows/create-report.sh
+
 
     - uses: docker://pandoc/core:3.5
       with:
-        args: -s -o submission-report.docx ${{ steps.create_report.outputs.report }}
+        args: -s -o submission-report.docx submission-report.md
 
     - uses: stefanzweifel/git-auto-commit-action@v6
       with:
