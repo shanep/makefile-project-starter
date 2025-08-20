@@ -2,6 +2,8 @@ name: Create Submission Report Via GitHub Action
 
 on:
     workflow_dispatch:
+permissions:
+  contents: write
 
 jobs:
 
@@ -18,5 +20,3 @@ jobs:
     - uses: stefanzweifel/git-auto-commit-action@v6
       with:
         commit_message: "Automated submission report example update"
-        commit_user_name: "github-actions"
-        commit_user_email: "none@none.com"
