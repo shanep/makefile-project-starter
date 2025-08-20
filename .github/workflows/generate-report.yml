@@ -14,7 +14,8 @@ jobs:
     - name: Create Submission Report
       id: create_report
       run: |
-        ./.github/workflows/create-report.sh
+        ls -la
+        echo "# Submission Report" > submission-report.md
         echo "files=$(printf '"%s" ' submission-report.md)" > $GITHUB_OUTPUT
       working-directory: ${{ github.workspace }}
     - uses: docker://pandoc/core:3.5
