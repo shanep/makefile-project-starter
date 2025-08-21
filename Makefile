@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 APP_NAME ?= myapp
 # Default build type (debug, release, test)
 BUILD ?= release
