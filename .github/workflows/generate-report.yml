@@ -17,11 +17,10 @@ jobs:
     - name: Install gcovr from pip
       run: pip install gcovr
     - uses: actions/checkout@v4
+    - name: Build Project
+      run: make all
     - name: Create Submission Report
-      id: create_report
       run: ./.github/workflows/create-report.sh
-
-
     - uses: docker://pandoc/core:3.5
       with:
         args: -s -o submission-report.docx submission-report.md

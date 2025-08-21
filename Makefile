@@ -85,40 +85,45 @@ debug-test:
 all: debug release debug-test test
 	@echo "All builds completed: debug, release, and test."
 
-leak: debug
-	$(MAKE) BUILD=debug _leak
-_leak:
-	@echo "Running memory leak check..."
-	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_d
-	@echo "Memory leak check complete. Check the output above for any leaks."
 
-leak-test: debug-test
-	$(MAKE) BUILD=debug-test _leak-test
-_leak-test:
-	@echo "Running memory leak on unit tests ..."
-	ASAN_OPTIONS="detect_leaks=1" ./$(BUILD_DIR)/$(APP_NAME)_td
-	@echo "Memory leak check complete. Check the output above for any leaks."
+leak:
+	@if [[ -e ./build/debug/$(APP_NAME)_d ]]; then \
+		ASAN_OPTIONS="detect_leaks=1" ./build/debug/$(APP_NAME)_d; \
+	else \
+		echo "Build the debug target first by running 'make debug'."; \
+		exit 1; \
+	fi
 
-check: test
-	$(MAKE) BUILD=test _check
-_check:
-	./$(BUILD_DIR)/$(APP_NAME)_t
-	@echo "Tests completed."
+leak-test:
+	@if [[ -e ./build/debug-test/$(APP_NAME)_td ]]; then \
+		ASAN_OPTIONS="detect_leaks=1" ./build/debug-test/$(APP_NAME)_td; \
+	else \
+		echo "Build the debug target first by running 'make debug-test'."; \
+		exit 1; \
+	fi
 
-report: clean test
-	$(MAKE) BUILD=test _report
-_report:
-	@echo "Generating HTML coverage report..."
-	./$(BUILD_DIR)/$(APP_NAME)_t
-	gcovr -r . --html --html-details --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o $(BUILD_DIR)/coverage_report.html
-	@echo "Coverage report generated at $(BUILD_DIR)/coverage_report.html"
+check:
+	@if [[ -e ./build/tests/$(APP_NAME)_t ]]; then \
+		./build/tests/$(APP_NAME)_t; \
+	else \
+		echo "Build the debug target first by running 'make test'."; \
+		exit 1; \
+	fi
 
-report-txt: clean test
-	$(MAKE) BUILD=test _report-txt
-_report-txt:
-	@echo "Generating text coverage report..."
-	./$(BUILD_DIR)/$(APP_NAME)_t
-	gcovr --txt -r . --exclude-directories $(BUILD_DIR)/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$'
+
+report:
+	@if [[ -e ./build/tests/$(APP_NAME)_t ]]; then \
+		./build/tests/$(APP_NAME)_t; \
+	else \
+		echo "Build the debug target first by running 'make test'."; \
+		exit 1; \
+	fi
+	./build/tests/$(APP_NAME)_t
+	mkdir -p ./build/report/html
+	mkdir -p ./build/report/txt
+	gcovr -r . --html --html-details --exclude-directories build/tests/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$' -o ./build/report/html/coverage_report.html
+	gcovr -r . --txt                 --exclude-directories build/tests/harness --exclude '.*main\.c$$' --exclude '.*test\.c$$'
+
 
 help:
 	@echo "Usage: make [target]"
@@ -128,8 +133,7 @@ help:
 	@echo "  debug       - Build the application in debug mode"
 	@echo "  test        - Build the unit tests"
 	@echo "  check       - Run tests and check results"
-	@echo "  report      - Generate HTML coverage report after running tests"
-	@echo "  report-txt  - Generate text coverage report after running tests"
+	@echo "  report      - Generate HTML and TXT coverage report after running tests"
 	@echo "  leak        - Check for memory leaks in executable debug mode"
 	@echo "  leak-test   - Check for memory leaks in unit tests debug mode"
 	@echo "  clean       - Remove build artifacts"
@@ -138,7 +142,7 @@ help:
 
 
 clean:
-	$(RM) -rf $(BUILD_BASE_DIR)
+	$(RM) -rf $(BUILD_BASE_DIR) submission-report.md
 
 # Print the build configuration and variables for debugging build issues
 print:

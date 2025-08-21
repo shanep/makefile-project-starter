@@ -32,7 +32,7 @@ echo "" >> $FINAL_REPORT
 # Build all in debug and release mode and capture output
 echo "## Build Output Debug" >> $FINAL_REPORT
 echo '```bash' >> $FINAL_REPORT
-BUILD=debug make all 2>&1 | tee -a $FINAL_REPORT
+make all 2>&1 | tee -a $FINAL_REPORT
 echo '```' >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 echo "---" >> $FINAL_REPORT
@@ -41,7 +41,7 @@ echo "" >> $FINAL_REPORT
 # Capture coverage report
 echo "## Coverage Report" >> $FINAL_REPORT
 echo '```bash' >> $FINAL_REPORT
-BUILD=test make report-txt 2>&1 | tee -a $FINAL_REPORT
+make report 2>&1 | tee -a $FINAL_REPORT
 echo '```' >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 echo "---" >> $FINAL_REPORT
@@ -50,7 +50,7 @@ echo "" >> $FINAL_REPORT
 # Capture memory leak report
 echo "## Memory Leak Report" >> $FINAL_REPORT
 echo '```bash' >> $FINAL_REPORT
-BUILD=debug-test make leak-test 2>&1 | tee -a $FINAL_REPORT
+make leak-test 2>&1 | tee -a $FINAL_REPORT
 echo '```' >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 echo "---" >> $FINAL_REPORT
