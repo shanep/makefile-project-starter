@@ -30,7 +30,7 @@ echo "---" >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 
 # Build all in debug and release mode and capture output
-echo "## Build Output Debug" >> $FINAL_REPORT
+echo "## Build Output" >> $FINAL_REPORT
 echo '```bash' >> $FINAL_REPORT
 make all 2>&1 | tee -a $FINAL_REPORT
 echo '```' >> $FINAL_REPORT

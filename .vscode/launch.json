@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Unit Test",
+            "name": "Debug Exe",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/build/debug/myapp_d",
@@ -31,10 +31,10 @@
             ]
         },
         {
-            "name": "Debug Exe",
+            "name": "Debug Tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/debug/myapp_t",
+            "program": "${workspaceRoot}/build/debug-test/myapp_td",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
