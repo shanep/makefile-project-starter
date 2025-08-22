@@ -48,7 +48,7 @@ echo "---" >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 
 # Capture memory leak report
-echo "## Memory Leak Report" >> $FINAL_REPORT
+echo "## Address Sanitizer Report" >> $FINAL_REPORT
 echo '```bash' >> $FINAL_REPORT
 make leak-test 2>&1 | tee -a $FINAL_REPORT
 echo '```' >> $FINAL_REPORT
@@ -56,21 +56,43 @@ echo "" >> $FINAL_REPORT
 echo "---" >> $FINAL_REPORT
 echo "" >> $FINAL_REPORT
 
-# Capture lab.c
-echo "## lab.c Content" >> $FINAL_REPORT
-echo '```c' >> $FINAL_REPORT
-cat src/lab.c >> $FINAL_REPORT
-echo '```' >> $FINAL_REPORT
-echo "" >> $FINAL_REPORT
-echo "---" >> $FINAL_REPORT
-echo "" >> $FINAL_REPORT
+# Capture all files in src/
+echo "## Source Files" >> $FINAL_REPORT
+for file in src/*; do
+    if [[ -f $file ]]; then
+        echo "### $(basename $file)" >> $FINAL_REPORT
+        echo '```c' >> $FINAL_REPORT
+        cat "$file" >> $FINAL_REPORT
+        echo '```' >> $FINAL_REPORT
+        echo "" >> $FINAL_REPORT
+        echo "---" >> $FINAL_REPORT
+        echo "" >> $FINAL_REPORT
+    fi
+done
 
-# Capture lab.h
-echo "## lab.h Content" >> $FINAL_REPORT
-echo '```c' >> $FINAL_REPORT
-cat src/lab.h >> $FINAL_REPORT
-echo '```' >> $FINAL_REPORT
-echo "" >> $FINAL_REPORT
-echo "---" >> $FINAL_REPORT
-echo "" >> $FINAL_REPORT
+# Capture all files in test/
+echo "## Test Files" >> $FINAL_REPORT
+for file in tests/*; do
+    if [[ -f $file ]]; then
+        echo "### $(basename $file)" >> $FINAL_REPORT
+        echo '```c' >> $FINAL_REPORT
+        cat "$file" >> $FINAL_REPORT
+        echo '```' >> $FINAL_REPORT
+        echo "" >> $FINAL_REPORT
+        echo "---" >> $FINAL_REPORT
+        echo "" >> $FINAL_REPORT
+    fi
+done
+
+# Capture README.md
+if [[ -f README.md ]]; then
+    echo "## README.md" >> $FINAL_REPORT
+    echo '```markdown' >> $FINAL_REPORT
+    cat README.md >> $FINAL_REPORT
+    echo '```' >> $FINAL_REPORT
+    echo "" >> $FINAL_REPORT
+    echo "---" >> $FINAL_REPORT
+    echo "" >> $FINAL_REPORT
+fi
+
 exit 0
