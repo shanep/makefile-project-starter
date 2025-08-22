@@ -63,6 +63,7 @@ for file in src/*; do
         echo "### $(basename $file)" >> $FINAL_REPORT
         echo '```c' >> $FINAL_REPORT
         cat "$file" >> $FINAL_REPORT
+        echo "" >> $FINAL_REPORT
         echo '```' >> $FINAL_REPORT
         echo "" >> $FINAL_REPORT
         echo "---" >> $FINAL_REPORT
@@ -77,6 +78,7 @@ for file in tests/*; do
         echo "### $(basename $file)" >> $FINAL_REPORT
         echo '```c' >> $FINAL_REPORT
         cat "$file" >> $FINAL_REPORT
+        echo "" >> $FINAL_REPORT
         echo '```' >> $FINAL_REPORT
         echo "" >> $FINAL_REPORT
         echo "---" >> $FINAL_REPORT
@@ -89,6 +91,7 @@ if [[ -f README.md ]]; then
     echo "## README.md" >> $FINAL_REPORT
     echo '```markdown' >> $FINAL_REPORT
     cat README.md >> $FINAL_REPORT
+    echo "" >> $FINAL_REPORT
     echo '```' >> $FINAL_REPORT
     echo "" >> $FINAL_REPORT
     echo "---" >> $FINAL_REPORT

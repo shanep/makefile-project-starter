@@ -57,3 +57,6 @@ use the debugger in the [VS Code documentation](https://code.visualstudio.com/do
 - Support for Address Sanitizer (ASan)
 - Code coverage support and report generation
 - Simple structure for organizing source files and build artifacts
+
+
+![AI](img/ai.png)
