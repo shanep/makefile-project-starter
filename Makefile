@@ -12,7 +12,7 @@ BUILD_BASE_DIR ?= build
 # https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
 CFLAGS ?= -Wall -Wextra -O2 -fPIE -MMD -MP
 CFLAGS += -Wformat -Wformat=2 -Wconversion -Wsign-conversion -Wimplicit-fallthrough
-CFLAGS += -fstrict-flex-arrays=3  -fstack-protector-strong
+CFLAGS += -fstack-protector-strong
 CFLAGS += -Werror=format-security -Werror=implicit -Werror=incompatible-pointer-types -Werror=int-conversion
 
 # For threading uncomment the next line
