@@ -4,6 +4,15 @@ This is a simple Makefile project template that can be used to build, test, and
 debug C projects. It includes support for debug builds, sanitizers, and code
 coverage.
 
+## Tools and Dependencies
+
+- GNU Make
+- GCC or Clang
+- Address Sanitizer (ASan) for memory error detection
+- gcov and lcov for code coverage
+- gcovr for generating coverage reports
+- pandoc for generating docx reports (optional)
+
 ## Test Harness
 
 This project uses the Unity Test Framework for unit testing. Refer to the
@@ -59,4 +68,4 @@ use the debugger in the [VS Code documentation](https://code.visualstudio.com/do
 - Simple structure for organizing source files and build artifacts
 
 
-![AI](img/ai.png)
+![AI](docs/ai.png)

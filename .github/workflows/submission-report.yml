@@ -20,7 +20,7 @@ jobs:
     - name: Build Project
       run: make all
     - name: Create Submission Report
-      run: ./.github/workflows/create-report.sh
+      run: ./scripts/create-submission-report.sh -m
     - uses: docker://pandoc/core:3.5
       with:
         args: -s -o submission-report.docx submission-report.md
