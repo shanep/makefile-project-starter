@@ -24,14 +24,16 @@ jobs:
     - name: GitHub Repo Info
       run: |
         echo "---" >> submission-report.md
-        echo "GitHub repo: ${{ github.repository }}" >> submission-report.md
+        echo "## GitHub Info" >> submission-report.md
+        echo "- GitHub repo name: ${{ github.repository }}" >> submission-report.md
         if [ "${{ github.event.repository.visibility }}" == "public" ]; then
-          echo "The repository visibility is public." >> submission-report.md
+          echo "- The repository visibility is public." >> submission-report.md
         elif [ "${{ github.event.repository.visibility }}" == "private" ]; then
-            echo "The repository visibility is private." >> submission-report.md
+            echo "- The repository visibility is private." >> submission-report.md
         elif [ "${{ github.event.repository.visibility }}" == "internal" ]; then
-            echo "The repository visibility is internal." >> submission-report.md
+            echo "- The repository visibility is internal." >> submission-report.md
         fi
+        echo "- The workflow was triggered by ${{ github.actor }}"
     - uses: docker://pandoc/core:3.5
       with:
         args: -s -o submission-report.docx submission-report.md
