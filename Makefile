@@ -83,9 +83,27 @@ test:
 debug-test:
 	$(MAKE) BUILD=debug-test
 
-all: debug release debug-test test
-	@echo "All builds completed: debug, release, and test."
+all:
+	@if [[ -e $(SRC_DIR)/main.c ]]; then \
+		$(MAKE) BUILD=debug; \
+		$(MAKE) BUILD=release; \
+		$(MAKE) BUILD=test; \
+		$(MAKE) BUILD=debug-test; \
+		echo "Builds completed. You can run the application with: ./build/release/$(APP_NAME)"; \
+		echo "You can run the debug build with: ./build/debug/$(APP_NAME)_d"; \
+		echo "You can run the test build with: ./build/tests/$(APP_NAME)_t"; \
+		echo "You can run the debug-test build with: ./build/debug-test/$(APP_NAME)_td"; \
+	else \
+		echo "No main.c found in $(SRC_DIR). Skipping debug and release builds."; \
+		$(MAKE) BUILD=test; \
+		$(MAKE) BUILD=debug-test; \
+		echo "Test builds completed. You can run the test build with: ./build/tests/$(APP_NAME)_t"; \
+		echo "You can run the debug-test build with: ./build/debug-test/$(APP_NAME)_td"; \
+	fi
 
+_all-exe: debug release debug-test test
+
+_all-text: test debug-test
 
 leak:
 	@if [[ -e ./build/debug/$(APP_NAME)_d ]]; then \
