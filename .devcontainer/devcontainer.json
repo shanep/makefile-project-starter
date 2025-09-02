@@ -1,7 +1,7 @@
 {
   "image": "mcr.microsoft.com/devcontainers/cpp:latest",
   "features": {
-    "ghcr.io/devcontainers-extra/features/gcovr:1": {}
-  },
-  "postCreateCommand": "sudo sysctl vm.mmap_rnd_bits=28"
+    "ghcr.io/devcontainers-extra/features/gcovr:1": {},
+    "ghcr.io/devcontainers-community/features/llvm": {}
+  }
 }
