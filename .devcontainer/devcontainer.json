@@ -1,7 +1,6 @@
 {
   "image": "mcr.microsoft.com/devcontainers/cpp:latest",
   "features": {
-    "ghcr.io/devcontainers-extra/features/gcovr:1": {},
-    "ghcr.io/devcontainers-community/features/llvm": {}
+    "ghcr.io/devcontainers-extra/features/gcovr:1": {}
   }
 }
