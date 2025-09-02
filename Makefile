@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 APP_NAME ?= myapp
 # Default build type (debug, release, test)
-BUILD ?= release
+BUILD ?= test
 
 # Set the directories for build and source files
 TEST_DIR ?= tests
