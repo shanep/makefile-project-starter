@@ -6,7 +6,7 @@ Computing (HPC) cluster.
 ## Accessing Onyx off Campus
 
 - If you are off campus, first log in to the [VPN](https://docs.google.com/document/d/1dkMJf3NyVHfU60B-3RvWq_TBn4uyeF8g5PyjZCz2mUU/edit?usp=drive_link)
-- Then you can use ssh as normal `ssh yourname@u.boisestate.edu@onyx.boisestate.edu`
+- Then you can use ssh as normal `ssh yourname@onyx.boisestate.edu`
 
 ### Troubleshooting
 
