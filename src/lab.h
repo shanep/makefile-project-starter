@@ -10,24 +10,5 @@
  */
 char* get_greeting(const char* restrict name);
 
-/** * @brief Adds two integers.
- *
- * This function adds two integers and returns the result.
- * @param a The first integer.
- * @param b The second integer.
- * @return The sum of a and b.
- */
-int add(int a, int b);
-
-/** * @brief Subtracts two integers.
- *
- * This function subtracts the second integer from the first and returns the result.
- * @param a The first integer.
- * @param b The second integer.
- * @return The result of a - b.
- */
-int subtract(int a, int b);
-
-
 
 #endif // LAB_H

@@ -2,14 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int add(int a, int b) {
-    return a + b;
-}
-
-int subtract(int a, int b) {
-    return a - b;
-}
-
 char *get_greeting(const char *restrict name)
 {
   if (name == NULL)
