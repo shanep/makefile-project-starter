@@ -44,9 +44,6 @@ echo "Generating submission report ..."
 echo -e "# Submission Report\n" >> $FINAL_REPORT
 echo -e "- Submission generated at $TIMESTAMP_START\n" >> $FINAL_REPORT
 echo -e "- Machine info: $MACHINE\n" >> $FINAL_REPORT
-echo -e "---\n" >> $FINAL_REPORT
-
-## Note to students:
 echo -e "## Note to Students\n" >> $FINAL_REPORT
 echo -e "Please read this report carefully before submission." >> $FINAL_REPORT
 echo -e "Ensure that all sections are complete and accurate." >> $FINAL_REPORT
@@ -59,10 +56,7 @@ echo -e "\n---\n" >> $FINAL_REPORT
 # Append the README file if it exists
 if [ -f "README.md" ]; then
     echo -e "## README\n" >> $FINAL_REPORT
-    echo '```markdown' >> $FINAL_REPORT
     cat "README.md" >> $FINAL_REPORT
-    echo "" >> $FINAL_REPORT
-    echo -e '```\n' >> $FINAL_REPORT
     echo -e "\n---\n" >> $FINAL_REPORT
 fi
 
