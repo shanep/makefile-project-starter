@@ -74,7 +74,7 @@ EOF
 
 # Append the contents of all src/ files to the report
 for file in src/*; do
-    if [ -f "$file" ]; then
+    if [[ -f "$file" && "$file" == *.c ]]; then
         echo -e "\n---\n" >> $FINAL_REPORT
         echo "## Source File: $(basename "$file")" >> $FINAL_REPORT
         echo '```c' >> $FINAL_REPORT
@@ -90,7 +90,7 @@ if [ -d "tests" ]; then
     echo -e "\n---\n" >> $FINAL_REPORT
     echo "## Test Files" >> $FINAL_REPORT
     for test_file in tests/*; do
-        if [ -f "$test_file" ]; then
+        if [[ -f "$test_file" && "$test_file" == *.c ]]; then
             echo "### $(basename "$test_file")" >> $FINAL_REPORT
             echo '```bash' >> $FINAL_REPORT
             cat "$test_file" >> $FINAL_REPORT
@@ -122,7 +122,7 @@ echo "" >> $FINAL_REPORT
 if [ "$DOCX" = true ]; then
     echo "Converting to DOCX format ..."
     pandoc -s -o $FINAL_REPORT_OUTPUT $FINAL_REPORT
-    rm -f $FINAL_REPORT
+    mv $FINAL_REPORT submission-data/$FINAL_REPORT
     echo "Created DOCX report at $FINAL_REPORT_OUTPUT"
 else
     echo "Created markdown report at $FINAL_REPORT"
