@@ -34,14 +34,6 @@ jobs:
             echo "- The repository visibility is internal." >> submission-report.md
         fi
         echo "- The workflow was triggered by ${{ github.actor }}" >> submission-report.md
-    - name: Hash the file to ensure it is not modified
-      run: |
-        sha256sum submission-report.md >> submission-report-hash.txt
-        echo "" >> submission-report.md
-        echo "Hash is committed to repo as submission-report-hash.txt" >> submission-report.md
-        echo "" >> submission-report.md
-        cat submission-report-hash.txt >> submission-report.md
-        
     - uses: docker://pandoc/core:3.5
       with:
         args: -s -o submission-report.docx submission-report.md
